@@ -1,5 +1,6 @@
 package org.katas.refactoring;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class OrderReceiptTest {
+	
     @Test
     public void shouldPrintCustomerInformationOnOrder() {
         Order order = new Order("Mr X", "Chicago, 60601", new ArrayList<LineItem>());
@@ -37,5 +39,35 @@ public class OrderReceiptTest {
                 "Total Amount\t71.5"
         );
     }
+    
+    @Test
+    public void should_return_total_sales_tax() {
+        ArrayList<LineItem> lineItems = new ArrayList<LineItem>() {{
+            add(new LineItem("milk", 10.0, 2));
+            add(new LineItem("biscuits", 5.0, 5));
+            add(new LineItem("chocolate", 20.0, 1));
+        }};
+        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems));
+
+        double totSalesTx = receipt.calculateSalesTax();
+
+        Assertions.assertEquals(6.5,totSalesTx);
+    }
+    
+    @Test
+    public void should_return_total_amount() {
+        ArrayList<LineItem> lineItems = new ArrayList<LineItem>() {{
+            add(new LineItem("milk", 10.0, 2));
+            add(new LineItem("biscuits", 5.0, 5));
+            add(new LineItem("chocolate", 20.0, 1));
+        }};
+        OrderReceipt receipt = new OrderReceipt(new Order(null, null, lineItems));
+
+        double tot = receipt.calculateTotalAmount();
+
+        Assertions.assertEquals(71.5,tot);
+    }
+
+    
 
 }
